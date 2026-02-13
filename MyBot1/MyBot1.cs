@@ -62,8 +62,13 @@ public class MyBot1 : Bot
 
         // Turn perpendicular to the op and run like lamine or balde.
         TurnRight(90 - bearing);
-        Forward(100);
+        Forward(100); 
 
         //lamine the goat still btw
+        public override void OnHitWall(HitWallEvent evt)
+    {
+        // When we hit a wall, back up and turn away
+        Back(50);
+        TurnRight(90);
     }
 }
