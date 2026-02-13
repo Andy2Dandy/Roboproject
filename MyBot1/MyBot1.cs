@@ -1,5 +1,8 @@
 using Robocode.TankRoyale.BotApi;
 using Robocode.TankRoyale.BotApi.Events;
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Reflection.Metadata;
 
 // ------------------------------------------------------------------
 // MyFirstBot
@@ -9,40 +12,58 @@ using Robocode.TankRoyale.BotApi.Events;
 // Probably the first bot you will learn about.
 // Moves in a seesaw motion and spins the gun around at each end.
 // ------------------------------------------------------------------
+
 public class MyBot1 : Bot
 {
-    // The main method starts our bot
     static void Main(string[] args)
     {
         new MyBot1().Start();
     }
 
-    // Called when a new round is started -> initialize and do some movement
     public override void Run()
     {
-        // Repeat while the bot is running
         while (IsRunning)
         {
-            Forward(100);
+            // move foward and stops when sum happens
+            Forward(400);
+
+            // turn the gun 360
             TurnGunLeft(360);
-            Back(100);
-            TurnGunLeft(360);
+
+            // this backs it moves backwards
+            Back(400);
+            TurnGunRight(360);
         }
     }
 
-    // We saw another bot -> fire!
     public override void OnScannedBot(ScannedBotEvent evt)
     {
-        Fire(1);
+        //this getswhere the enmy is
+        var bearing = BearingTo(evt.X, evt.Y);
+        TurnGunRight(bearing);
+
+        //uses the distance to decide bullet speed
+        double distance = DistanceTo(evt.X, evt.Y);
+
+        if (distance < 200)
+        {
+            Fire(3); //close range and high dmg slow bullet
+        }
+        else
+        {
+            Fire(1); // long range and fast bullet low dmg
+        }
     }
 
-    // We were hit by a bullet -> turn perpendicular to the bullet
     public override void OnHitByBullet(HitByBulletEvent evt)
     {
-        // Calculate the bearing to the direction of the bullet
+        //when the bullet is gong toward mybot it will move.
         var bearing = CalcBearing(evt.Bullet.Direction);
 
-        // Turn 90 degrees to the bullet direction based on the bearing
+        // Turn perpendicular to the op and run like lamine or balde.
         TurnRight(90 - bearing);
+        Forward(100);
+
+        //lamine the goat still btw
     }
 }
