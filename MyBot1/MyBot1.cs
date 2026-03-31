@@ -5,19 +5,14 @@ using System.Diagnostics.CodeAnalysis;
 using System.Reflection.Metadata;
 
 // ------------------------------------------------------------------
-// MyFirstBot
+// laminebot10
+//idk
 // ------------------------------------------------------------------
-// A sample bot originally made for Robocode by Mathew Nelson.
-//
-// Probably the first bot you will learn about.
-// Moves in a seesaw motion and spins the gun around at each end.
-// ------------------------------------------------------------------
-
-public class MyBot1 : Bot
+public class laminebot10 : Bot
 {
     static void Main(string[] args)
     {
-        new MyBot1().Start();
+        new laminebot10().Start();
     }
 
     public override void Run()
@@ -39,19 +34,20 @@ public class MyBot1 : Bot
     public override void OnScannedBot(ScannedBotEvent evt)
     {
         //this getswhere the enmy is
-        var bearing = BearingTo(evt.X, evt.Y);
-        TurnGunRight(bearing);
+        var enemyDirection = DirectionTo(evt.X, evt.Y);
+        var gunTurn = CalcBearing(enemyDirection - GunDirection);
+        TurnGunRight(gunTurn);
 
         //uses the distance to decide bullet speed
         double distance = DistanceTo(evt.X, evt.Y);
 
-        if (distance < 200)
+        if (distance > 400)
         {
-            Fire(3); //close range and high dmg slow bullet
+            Fire(1); // long range and fast bullet low dmg
         }
         else
         {
-            Fire(1); // long range and fast bullet low dmg
+            Fire(2); // standard bullet
         }
     }
 
@@ -62,13 +58,17 @@ public class MyBot1 : Bot
 
         // Turn perpendicular to the op and run like lamine or balde.
         TurnRight(90 - bearing);
-        Forward(100); 
+        Forward(100);
 
         //lamine the goat still btw
-        public override void OnHitWall(HitWallEvent evt)
+    }
+
+    public override void OnHitWall(HitWallEvent evt)
     {
         // When we hit a wall, back up and turn away
         Back(50);
         TurnRight(90);
+
+        // how do i name bro laminebot10
     }
 }
