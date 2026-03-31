@@ -6,7 +6,6 @@ using System.Reflection.Metadata;
 
 // ------------------------------------------------------------------
 // laminebot10
-//idk
 // ------------------------------------------------------------------
 public class laminebot10 : Bot
 {
@@ -17,6 +16,9 @@ public class laminebot10 : Bot
 
     public override void Run()
     {
+        // This makes the radar spin forever until it finds someone
+        TurnRadarRight(double.PositiveInfinity);
+
         while (IsRunning)
         {
             // move foward and stops when sum happens
@@ -37,6 +39,10 @@ public class laminebot10 : Bot
         var enemyDirection = DirectionTo(evt.X, evt.Y);
         var gunTurn = CalcBearing(enemyDirection - GunDirection);
         TurnGunRight(gunTurn);
+
+        // This locks the radar onto the enemy so we don't lose them
+        var radarTurn = CalcBearing(enemyDirection - RadarDirection);
+        TurnRadarRight(radarTurn);
 
         //uses the distance to decide bullet speed
         double distance = DistanceTo(evt.X, evt.Y);
